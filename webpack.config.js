@@ -1,6 +1,20 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const path = require('path');
+
+const alias = (url) => path.resolve(__dirname, './', url);
 
 module.exports = {
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      '@assets': alias('src/assets'),
+      '@components': alias('src/components'),
+      '@pages': alias('src/pages'),
+      '@styles': alias('src/styles'),
+      '@utils': alias('src/utils'),
+    },
+  },
   module: {
     rules: [
       {
@@ -34,5 +48,6 @@ module.exports = {
       filename: './index.html',
       favicon: './public/favicon.ico',
     }),
+    new Dotenv(),
   ],
 };
