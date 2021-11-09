@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
+    "lint": "eslint --ext .js,.jsx src/ --fix",
     "test": "jest"
   },
   "repository": {
@@ -32,10 +33,19 @@
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "babel-loader": "^8.2.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "file-loader": "^6.2.0",
     "html-loader": "^3.0.1",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.3.1",
+    "prettier": "^2.4.1",
     "webpack": "^5.62.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"
