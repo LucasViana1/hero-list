@@ -1,0 +1,43 @@
+{
+  "name": "hero-list",
+  "version": "1.0.0",
+  "description": "Aplicaçao Web de listagem de herois",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open --mode development",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasViana1/hero-list.git"
+  },
+  "keywords": [
+    "React",
+    "Marvel"
+  ],
+  "author": "Lucas Viana Cunha <lucasviana112@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasViana1/hero-list/issues"
+  },
+  "homepage": "https://github.com/LucasViana1/hero-list#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-react": "^7.16.0",
+    "babel-loader": "^8.2.3",
+    "file-loader": "^6.2.0",
+    "html-loader": "^3.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.3.1",
+    "webpack": "^5.62.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
+  }
+}
