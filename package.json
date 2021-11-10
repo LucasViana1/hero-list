@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
     "lint": "eslint --ext .js,.jsx src/ --fix",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "@babel/plugin-transform-runtime": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
+    "babel-jest": "^27.3.1",
     "babel-loader": "^8.2.3",
     "dotenv-webpack": "^7.0.3",
     "eslint": "^7.32.0",
