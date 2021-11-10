@@ -34,7 +34,8 @@ export const HomeSection = styled.section`
 `;
 
 export const HomeSearch = styled.div`
-  text-align: center;
+  width: 70%;
+  margin: auto;
   margin-bottom: 4rem;
 `;
 
@@ -86,9 +87,19 @@ export const FilterActions = styled.div`
   }
 `;
 
+export const FilterFavoriteImg = styled.img`
+  margin-right: 2.25rem;
+`;
+
 export const HomeArticle = styled.article`
   display: flex;
   justify-content: center;
+`;
+
+export const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 6rem 0;
 `;
 
 export const CharactersContainer = styled.div`
@@ -101,4 +112,9 @@ export const CharactersContainer = styled.div`
     width: 80%;
     justify-content: flex-start;
   }
+`;
+
+export const ErrorMessage = styled.span`
+  font-size: 1.8rem;
+  color: ${color.red.normal};
 `;

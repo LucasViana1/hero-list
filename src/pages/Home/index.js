@@ -6,21 +6,42 @@ import iconHero from '@assets/icones/heroi/noun_Superhero_2227044@2x.png';
 import useFetchCharacters from '@services/useFetchCharacters';
 import Switch from '@components/Switch';
 import Button from '@components/Button';
-import * as S from './styles';
+import useDebounce from '@utils/useDebounce';
+import Input from '@components/Input';
+import Loader from '@components/Loader';
+import sortByName from '@utils/sortByName';
 import CharacterCard from '../../components/CharacterCard';
+import * as S from './styles';
 
 const Home = () => {
+  const [searchName, setSearchName] = useState(null);
   const [filterByFavorite, setFilterByFavorite] = useState(false);
-  const { getCharacters, characters /* , charactersIsLoading, charactersError */ } = useFetchCharacters();
+  const [filterByName, setFilterByName] = useState('desc');
+  const { getCharacters, charactersData, charactersList, setCharactersList, charactersIsLoading, charactersError } =
+    useFetchCharacters();
+  const debouncedSearchTerm = useDebounce(searchName, 500);
 
   useEffect(() => {
     getCharacters();
   }, [getCharacters]);
 
-  console.log(characters);
+  useEffect(() => {
+    if (debouncedSearchTerm) getCharacters(debouncedSearchTerm);
+  }, [debouncedSearchTerm, getCharacters]);
+
+  const handleSearchCharacters = ({ target: { value } }) => {
+    if (value === '') getCharacters();
+    setSearchName(value);
+  };
 
   const handleFilterByFavorite = () => {
     setFilterByFavorite((oldFilterByFavorite) => !oldFilterByFavorite);
+  };
+
+  const handleFilterByName = (sortTerm) => {
+    const currentSortTerm = sortTerm === 'asc' ? 'desc' : 'asc';
+    setCharactersList((oldCharactersList) => sortByName(oldCharactersList, sortTerm));
+    setFilterByName(currentSortTerm);
   };
 
   return (
@@ -37,24 +58,41 @@ const Home = () => {
         </h2>
 
         <S.HomeSearch>
-          <input type="search" placeholder="Procure por heróis" />
+          <Input
+            id="search-characters"
+            type="search"
+            placeholder="Procure por heróis"
+            onChange={handleSearchCharacters}
+          />
         </S.HomeSearch>
 
         <S.HomeFilter>
-          <p>Encontrados 20 heróis</p>
+          <p>
+            {!charactersIsLoading && !charactersError && charactersData
+              ? `Encontrado${charactersData.count === 1 ? '' : 's'} ${charactersData.count} herói${
+                  charactersData.count === 1 ? '' : 's'
+                }`
+              : `Pesquisando... `}
+
+            {charactersError && `Erro!`}
+          </p>
 
           <S.FilterActions>
             <p>
               <img src={iconHero} alt="Herói" width="20" /> Ordenar por nome - A/Z
-              <Switch id="switch-filter" name="switch-filter" checked onChange={() => {}} />
+              <Switch
+                id="switch-filter"
+                name="switch-filter"
+                checked={filterByName === 'asc'}
+                onChange={() => handleFilterByName(filterByName)}
+              />
             </p>
 
             <Button onClick={handleFilterByFavorite}>
-              <img
+              <S.FilterFavoriteImg
                 src={filterByFavorite ? iconHeartFilled : iconHeartUnfilled}
                 alt="Favorito"
                 width="30"
-                css={{ marginRigh: '2.25rem' }}
               />
               Somente favoritos
             </Button>
@@ -62,10 +100,20 @@ const Home = () => {
         </S.HomeFilter>
 
         <S.HomeArticle>
-          <S.CharactersContainer>
-            {characters.results &&
-              characters.results.map((character) => <CharacterCard key={character.id} character={character} />)}
-          </S.CharactersContainer>
+          {charactersIsLoading && (
+            <S.LoaderContainer>
+              <Loader />
+            </S.LoaderContainer>
+          )}
+
+          {!charactersIsLoading && !charactersError && (
+            <S.CharactersContainer>
+              {charactersList &&
+                charactersList.map((character) => <CharacterCard key={character.id} character={character} />)}
+            </S.CharactersContainer>
+          )}
+
+          {!charactersIsLoading && charactersError && <S.ErrorMessage>{charactersError}</S.ErrorMessage>}
         </S.HomeArticle>
       </S.HomeSection>
     </>
