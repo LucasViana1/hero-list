@@ -11,6 +11,7 @@ module.exports = {
       '@assets': alias('src/assets'),
       '@components': alias('src/components'),
       '@pages': alias('src/pages'),
+      '@services': alias('src/services'),
       '@styles': alias('src/styles'),
       '@utils': alias('src/utils'),
     },
