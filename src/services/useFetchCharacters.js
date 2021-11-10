@@ -6,27 +6,38 @@ const privateKey = process.env.PRIVATE_KEY;
 const publicKey = process.env.PUBLIC_KEY;
 
 const useFetchCharacters = () => {
-  const [characters, setCharacters] = useState([]);
+  const [charactersData, setCharactersData] = useState();
+  const [charactersList, setCharactersList] = useState([]);
   const [charactersIsLoading, setCharactersIsLoading] = useState(false);
   const [charactersError, setCharactersError] = useState('');
 
-  const getCharacters = useCallback(async () => {
+  const getCharacters = useCallback(async (searchName = null) => {
     setCharactersIsLoading(true);
     setCharactersError('');
     const timestamp = Math.floor(Date.now() / 1000);
     const hash = md5(timestamp + privateKey + publicKey);
 
+    let query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`;
+
+    if (searchName) {
+      query += `&nameStartsWith=${searchName}`;
+    }
+
     await api
-      .get(`/characters?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`)
-      .then(({ data: { data } }) => setCharacters(data))
+      .get(`/characters${query}`)
+      .then(({ data: { data } }) => {
+        setCharactersData(data);
+        setCharactersList(data.results);
+      })
       .catch((error) => setCharactersError(error.message));
-    // nameStartsWith=
 
     setCharactersIsLoading(false);
   }, []);
 
   return {
-    characters,
+    charactersData,
+    charactersList,
+    setCharactersList,
     charactersIsLoading,
     charactersError,
     getCharacters,
