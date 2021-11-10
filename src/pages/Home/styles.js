@@ -49,13 +49,10 @@ export const HomeFilter = styled.div`
   }
 
   p {
+    display: flex;
+    align-items: center;
     color: ${color.gray.light};
     font-weight: 700;
-    margin-bottom: 2rem;
-
-    @media (min-width: ${breakpoint.lg}) {
-      margin-bottom: 0;
-    }
   }
 `;
 
@@ -71,7 +68,11 @@ export const FilterActions = styled.div`
 
   p {
     color: ${color.red.normal};
-    margin: 0;
+    margin-right: 1rem;
+
+    img {
+      margin-right: 0.25rem;
+    }
   }
 
   p:last-child {
@@ -85,4 +86,19 @@ export const FilterActions = styled.div`
   }
 `;
 
-export const HomeArticle = styled.article``;
+export const HomeArticle = styled.article`
+  display: flex;
+  justify-content: center;
+`;
+
+export const CharactersContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media (min-width: ${breakpoint.xl}) {
+    width: 80%;
+    justify-content: flex-start;
+  }
+`;
