@@ -9,6 +9,7 @@ const CharacterCard = ({ character }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const {
+    id,
     name,
     thumbnail: { extension, path },
   } = character;
@@ -18,7 +19,7 @@ const CharacterCard = ({ character }) => {
   };
 
   return (
-    <S.CharacterCard>
+    <S.CharacterCard to={`/personagem?id=${id}`}>
       <img src={`${path}.${extension}`} alt={name} />
 
       <S.CharacterInfos>
