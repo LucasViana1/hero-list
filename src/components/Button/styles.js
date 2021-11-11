@@ -24,7 +24,7 @@ export const Button = styled.button`
   transition: all 0.3s ease;
   color: ${color.red.normal};
   background-color: transparent;
-  margin: auto;
+  margin: ${({ margin }) => margin};
 
   &:hover,
   &:focus {
