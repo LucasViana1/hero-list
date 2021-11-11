@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import logoImg from '@assets/logo/Group.png';
 import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
 import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
 import iconHero from '@assets/icones/heroi/noun_Superhero_2227044@2x.png';
@@ -12,6 +11,7 @@ import Loader from '@components/Loader';
 import sortByName from '@utils/sortByName';
 import CharacterCard from '../../components/CharacterCard';
 import * as S from './styles';
+import Logo from '../../components/Logo';
 
 const Home = () => {
   const [searchName, setSearchName] = useState(null);
@@ -47,7 +47,7 @@ const Home = () => {
   return (
     <>
       <S.HomeHeader>
-        <img src={logoImg} alt="Logo Marvel" />
+        <Logo />
         <h1>Explore o universo</h1>
       </S.HomeHeader>
 

@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import useFetchCharacterById from '@services/useFetchCharacterById';
-import logoImg from '@assets/logo/Group.png';
 import Input from '@components/Input';
 import iconBook from '@assets/icones/book/Group.png';
 import iconVideo from '@assets/icones/video/Shape.png';
-import iconStarFilled from '@assets/review/Path.png';
-import iconStarUnfilled from '@assets/review/Path Copy 6.png';
-
+import iconStar from '@assets/review/Group 4.png';
+import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
+import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
+import Button from '@components/Button';
 import * as S from './styles';
+import Logo from '../../components/Logo';
 
 /**
  * name
  * description
- * total quaqdrinhos
- * total filmes
- * rating (estrelas)
- * ultimo quadrinho (data)
- * ultimos lançamentos (lista com ultimos quadrinhos)
+ * total quaqdrinhos -> pegar de characters/:id/comics (data.total)
+ * ultimo quadrinho (data) -> primeiro item do array de ultimos lançamentos (dates -> type onsaleDate)
+ * ultimos lançamentos (lista com ultimos quadrinhos) -> characters/:id/comics
  */
 
 const Character = () => {
+  const [isFavorite, setIsFavorite] = useState(false);
   const { search } = useLocation();
   const [, characterId] = search.split('=');
   const { getCharacter } = useFetchCharacterById();
@@ -28,6 +28,10 @@ const Character = () => {
   useEffect(() => {
     getCharacter(characterId || 1009351);
   }, [characterId, getCharacter]);
+
+  const handleAddToFavorite = () => {
+    setIsFavorite((oldIsFavorite) => !oldIsFavorite);
+  };
 
   return (
     <>
@@ -37,22 +41,27 @@ const Character = () => {
       ultimos quadrinhos lançados
     */}
       <S.CharacterHeader>
-        <img src={logoImg} alt="Logo Marvel" />
+        <Logo />
         <div>
-          <Input id="search-characters" type="search" placeholder="Procure por heróis" onChange={() => {}} />
+          <Input
+            id="search-characters"
+            type="search"
+            kind="light"
+            placeholder="Procure por heróis"
+            onChange={() => {}}
+          />
         </div>
       </S.CharacterHeader>
 
       <S.CharacterSection>
         <S.CharacterCol width="40%" isSeparate>
-          {/* titulo e botão favorito */}
           <S.CharacterName>
             <h1>hulk</h1>
-            <p>favorito</p>
+            <Button onClick={handleAddToFavorite} minWidth="1rem" margin="0">
+              <img src={isFavorite ? iconHeartFilled : iconHeartUnfilled} alt="Favoritar" />
+            </Button>
           </S.CharacterName>
 
-          {/* descrição */}
-          {/* <div> */}
           <S.CharacterDescription>
             Lorem ipsum ultricies pulvinar pharetra, interdum primis at, odio risus gravida. augue cras praesent taciti
             sodales auctor massa nisi nullam fusce, tempus cubilia class venenatis litora aenean ad amet. class dapibus
@@ -62,7 +71,6 @@ const Character = () => {
             est aptent id in, ut ad morbi dolor morbi arcu ullamcorper inceptos platea, curabitur nam consequat ad
             bibendum integer ligula curae.
           </S.CharacterDescription>
-          {/* </div> */}
 
           {/* status */}
           <div>
@@ -77,7 +85,7 @@ const Character = () => {
               <div>
                 <p>Filmes</p>
                 <p>
-                  <img src={iconVideo} alt="Filmes" /> 40
+                  <img src={iconVideo} alt="Filmes" />
                 </p>
               </div>
             </S.CharacterQuantity>
@@ -85,11 +93,7 @@ const Character = () => {
             <S.CharacterRatingAndLastComic>
               <p>
                 <b>Rating:</b>
-                <img src={iconStarFilled} alt="Estrela preenchida" />
-                <img src={iconStarFilled} alt="Estrela preenchida" />
-                <img src={iconStarFilled} alt="Estrela preenchida" />
-                <img src={iconStarFilled} alt="Estrela preenchida" />
-                <img src={iconStarUnfilled} alt="Estrela não mpreenchida" />
+                <img src={iconStar} alt="Avaliação" />
               </p>
 
               <p>
