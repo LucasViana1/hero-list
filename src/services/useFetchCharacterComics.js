@@ -18,7 +18,7 @@ const useFetchcomicsComics = () => {
       const timestamp = Math.floor(Date.now() / 1000);
       const hash = md5(timestamp + privateKey + publicKey);
 
-      const query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`;
+      const query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=10&offset=0`;
 
       await api
         .get(`/characters/${characterId}/comics${query}&startYear=${currentYear}`)
