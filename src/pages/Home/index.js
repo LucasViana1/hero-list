@@ -9,13 +9,16 @@ import useDebounce from '@utils/useDebounce';
 import Input from '@components/Input';
 import Loader from '@components/Loader';
 import sortByName from '@utils/sortByName';
-import CharacterCard from '../../components/CharacterCard';
+import { useLocation } from 'react-router-dom';
+import CharacterCard from '@components/CharacterCard';
+import Logo from '@components/Logo';
+import useFavoritesStorage from '@utils/useFavoritesStorage';
+import Footer from '@components/Footer';
 import * as S from './styles';
-import Logo from '../../components/Logo';
-import useFavoritesStorage from '../../utils/useFavoritesStorage';
 
 const Home = () => {
-  const [searchName, setSearchName] = useState(null);
+  const { state } = useLocation();
+  const [searchName, setSearchName] = useState(state?.characterName || '');
   const [filterByFavorite, setFilterByFavorite] = useState(false);
   const [filterByName, setFilterByName] = useState('desc');
   const { getFavorites } = useFavoritesStorage();
@@ -31,8 +34,8 @@ const Home = () => {
   const debouncedSearchTerm = useDebounce(searchName, 500);
 
   useEffect(() => {
-    getCharacters();
-  }, [getCharacters]);
+    getCharacters(state?.characterName || '');
+  }, [getCharacters, state]);
 
   useEffect(() => {
     if (debouncedSearchTerm) getCharacters(debouncedSearchTerm);
@@ -82,6 +85,7 @@ const Home = () => {
             id="search-characters"
             type="search"
             placeholder="Procure por heróis"
+            value={searchName}
             onChange={handleSearchCharacters}
           />
         </S.HomeSearch>
@@ -136,6 +140,8 @@ const Home = () => {
           {!charactersIsLoading && charactersError && <S.ErrorMessage>{charactersError}</S.ErrorMessage>}
         </S.HomeArticle>
       </S.HomeSection>
+
+      <Footer />
     </>
   );
 };

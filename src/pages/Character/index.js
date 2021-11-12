@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import useFetchCharacterComics from '@services/useFetchCharacterComics';
 import Input from '@components/Input';
 import iconBook from '@assets/icones/book/Group.png';
@@ -10,19 +10,22 @@ import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
 import Button from '@components/Button';
 import Logo from '@components/Logo';
 import Loader from '@components/Loader';
+import formatDate from '@utils/formatDate';
+import useFavoritesStorage from '@utils/useFavoritesStorage';
+import Footer from '@components/Footer';
 import * as S from './styles';
-import formatDate from '../../utils/formatDate';
-import useFavoritesStorage from '../../utils/useFavoritesStorage';
 
 const Character = () => {
   const {
     search,
     state: { name, description, imageUrl },
   } = useLocation();
+  const router = useHistory();
   const { getComics, comics, comicsIsLoading, comicsError } = useFetchCharacterComics();
   const { verifyFavorite, updateFavorites, getFavorites } = useFavoritesStorage();
   const [, characterId] = search.split('=');
   const [isFavorite, setIsFavorite] = useState(verifyFavorite(characterId));
+  const [characterName, setCharacterName] = useState('');
 
   useEffect(() => {
     getComics(characterId);
@@ -37,6 +40,14 @@ const Character = () => {
       return favorites.length < 5 ? !oldIsFavorite : oldIsFavorite;
     });
   }, [characterId, getFavorites, updateFavorites]);
+
+  const handleSearchCharacter = ({ key }) => {
+    if (key === 'Enter') {
+      router.push('/', { characterName });
+    }
+  };
+
+  const handleChange = ({ target: { value } }) => setCharacterName(value);
 
   const dateLastComic = useMemo(() => {
     if (comics && comics.results.length > 0) {
@@ -58,7 +69,9 @@ const Character = () => {
             type="search"
             kind="light"
             placeholder="Procure por heróis"
-            onChange={() => {}}
+            value={characterName}
+            onKeyPress={handleSearchCharacter}
+            onChange={handleChange}
           />
         </div>
       </S.CharacterHeader>
@@ -109,7 +122,7 @@ const Character = () => {
         </S.CharacterCol>
 
         <S.CharacterCol width="50%">
-          <img src={imageUrl} width="100%" alt="foto personagem" />
+          <img src={`${imageUrl}`} width="100%" alt="foto personagem" />
         </S.CharacterCol>
       </S.CharacterSection>
 
@@ -133,6 +146,8 @@ const Character = () => {
           {!comicsIsLoading && comicsError && <S.ErrorMessage>{comicsError}</S.ErrorMessage>}
         </S.ComicsContainer>
       </S.CharacterSection>
+
+      <Footer />
     </>
   );
 };
