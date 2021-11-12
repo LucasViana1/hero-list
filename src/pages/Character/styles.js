@@ -137,17 +137,31 @@ export const ComicsContainer = styled.div`
 `;
 
 export const ComicCard = styled.div`
-  height: 10rem;
+  height: 14rem;
   width: 9rem;
   border: 1px solid black;
   margin: 0 22px 4rem 0;
 
   @media (min-width: ${breakpoint.xl}) {
-    width: 6rem;
+    width: 8rem;
   }
 
   img {
     width: 100%;
-    height: 76%;
+    height: 65%;
   }
+
+  p {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+`;
+
+export const ErrorMessage = styled.span`
+  font-size: 1.8rem;
+  color: ${color.red.normal};
 `;

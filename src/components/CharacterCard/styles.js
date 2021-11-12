@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { breakpoint } from '@styles/theme';
-import { Link } from 'react-router-dom';
 
-export const CharacterCard = styled(Link)`
+export const CharacterCard = styled.div`
   height: 20rem;
   width: 18rem;
   border: 1px solid black;
@@ -14,7 +13,7 @@ export const CharacterCard = styled(Link)`
 
   img {
     width: 100%;
-    height: 76%;
+    height: 100%;
   }
 `;
 
