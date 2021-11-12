@@ -9,12 +9,14 @@ const useFavoritesStorage = () => {
 
   const setFavorites = (newFavorites) => localStorage.setItem(CHARACTERS_FAVORITES, JSON.stringify(newFavorites));
 
+  const clearFavorites = () => localStorage.removeItem(CHARACTERS_FAVORITES);
+
   const getIndex = (favorites, id) => favorites.findIndex((favoriteId) => favoriteId === id);
 
   const verifyFavorite = (characterId) => {
     const favorites = getFavorites();
 
-    if (!favorites) return false;
+    if (!favorites || !characterId) return false;
 
     const foundIndex = getIndex(favorites, Number(characterId));
 
@@ -26,6 +28,8 @@ const useFavoritesStorage = () => {
   const updateFavorites = (isRemove, id) => {
     let favorites = getFavorites();
     const convertId = Number(id);
+
+    if (typeof isRemove !== 'boolean' || !id || Number.isNaN(convertId)) return;
 
     if (favorites.length > 0) {
       if (isRemove) {
@@ -43,7 +47,12 @@ const useFavoritesStorage = () => {
     setFavorites(favorites);
   };
 
-  return { verifyFavorite, updateFavorites, getFavorites };
+  return {
+    verifyFavorite,
+    updateFavorites,
+    getFavorites,
+    clearFavorites,
+  };
 };
 
 export default useFavoritesStorage;
