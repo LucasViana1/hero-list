@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import * as S from './styles';
 
-const Button = ({ onClick, minWidth, margin, children }) => (
-  <S.Button type="button" onClick={onClick} minWidth={minWidth} margin={margin}>
+const Button = ({ onClick, minWidth, margin, children, ...rest }) => (
+  <S.Button type="button" onClick={onClick} minWidth={minWidth} margin={margin} {...rest}>
     {children}
   </S.Button>
 );
