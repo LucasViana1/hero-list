@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import useFetchCharacterComics from '@services/useFetchCharacterComics';
 import Input from '@components/Input';
@@ -12,33 +12,40 @@ import Logo from '@components/Logo';
 import Loader from '@components/Loader';
 import * as S from './styles';
 import formatDate from '../../utils/formatDate';
+import useFavoritesStorage from '../../utils/useFavoritesStorage';
 
 const Character = () => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const {
     search,
     state: { name, description, imageUrl },
   } = useLocation();
-
-  const [, characterId] = search.split('=');
   const { getComics, comics, comicsIsLoading, comicsError } = useFetchCharacterComics();
+  const { verifyFavorite, updateFavorites, getFavorites } = useFavoritesStorage();
+  const [, characterId] = search.split('=');
+  const [isFavorite, setIsFavorite] = useState(verifyFavorite(characterId));
 
   useEffect(() => {
     getComics(characterId);
   }, [characterId, getComics]);
 
-  const handleAddToFavorite = () => {
-    setIsFavorite((oldIsFavorite) => !oldIsFavorite);
-  };
+  const handleAddToFavorite = useCallback(() => {
+    setIsFavorite((oldIsFavorite) => {
+      const favorites = getFavorites();
+
+      updateFavorites(oldIsFavorite, characterId);
+
+      return favorites.length < 5 ? !oldIsFavorite : oldIsFavorite;
+    });
+  }, [characterId, getFavorites, updateFavorites]);
 
   const dateLastComic = useMemo(() => {
-    if (comics) {
+    if (comics && comics.results.length > 0) {
       const [comic] = comics.results;
       const saleDate = comic.dates.find((date) => date.type === 'onsaleDate');
-      return saleDate.date || 'Data não encontrada';
+      return saleDate.date || null;
     }
 
-    return 'Data não encontrada';
+    return null;
   }, [comics]);
 
   return (
@@ -114,6 +121,7 @@ const Character = () => {
 
           {!comicsIsLoading &&
             comics &&
+            comics.results &&
             !comicsError &&
             comics.results.map((comic) => (
               <S.ComicCard key={comic.id}>

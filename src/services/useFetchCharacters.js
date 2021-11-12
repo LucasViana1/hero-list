@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import api from '@services/api';
 import md5 from 'md5';
+import axios from 'axios';
 
 const privateKey = process.env.PRIVATE_KEY;
 const publicKey = process.env.PUBLIC_KEY;
@@ -34,6 +35,37 @@ const useFetchCharacters = () => {
     setCharactersIsLoading(false);
   }, []);
 
+  const getFavoritesCharacters = useCallback((favoritesId) => {
+    setCharactersIsLoading(true);
+    setCharactersError('');
+
+    if (favoritesId.length === 0) {
+      setCharactersError('Nada foi encontrado');
+      setCharactersIsLoading(false);
+      return;
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    const hash = md5(timestamp + privateKey + publicKey);
+
+    const query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`;
+
+    const requests = favoritesId.map((favoriteId) => api.get(`/characters/${favoriteId}${query}`));
+
+    axios
+      .all(requests)
+      .then((response) => {
+        const results = response.reduce((acc, current) => {
+          const [character] = current.data.data.results;
+          return [...acc, character];
+        }, []);
+
+        setCharactersList(results);
+      })
+      .catch((error) => setCharactersError(error.message))
+      .finally(() => setCharactersIsLoading(false));
+  }, []);
+
   return {
     charactersData,
     charactersList,
@@ -41,6 +73,7 @@ const useFetchCharacters = () => {
     charactersIsLoading,
     charactersError,
     getCharacters,
+    getFavoritesCharacters,
   };
 };
 

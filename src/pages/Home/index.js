@@ -12,13 +12,22 @@ import sortByName from '@utils/sortByName';
 import CharacterCard from '../../components/CharacterCard';
 import * as S from './styles';
 import Logo from '../../components/Logo';
+import useFavoritesStorage from '../../utils/useFavoritesStorage';
 
 const Home = () => {
   const [searchName, setSearchName] = useState(null);
   const [filterByFavorite, setFilterByFavorite] = useState(false);
   const [filterByName, setFilterByName] = useState('desc');
-  const { getCharacters, charactersData, charactersList, setCharactersList, charactersIsLoading, charactersError } =
-    useFetchCharacters();
+  const { getFavorites } = useFavoritesStorage();
+  const {
+    getCharacters,
+    getFavoritesCharacters,
+    charactersData,
+    charactersList,
+    setCharactersList,
+    charactersIsLoading,
+    charactersError,
+  } = useFetchCharacters();
   const debouncedSearchTerm = useDebounce(searchName, 500);
 
   useEffect(() => {
@@ -35,7 +44,18 @@ const Home = () => {
   };
 
   const handleFilterByFavorite = () => {
-    setFilterByFavorite((oldFilterByFavorite) => !oldFilterByFavorite);
+    setFilterByFavorite((oldFilterByFavorite) => {
+      const newFilterByFavorite = !oldFilterByFavorite;
+
+      if (newFilterByFavorite) {
+        const favoritesId = getFavorites();
+        getFavoritesCharacters(favoritesId);
+      } else {
+        getCharacters();
+      }
+
+      return newFilterByFavorite;
+    });
   };
 
   const handleFilterByName = (sortTerm) => {
