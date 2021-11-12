@@ -10,9 +10,15 @@ const sortValues = {
 };
 
 const sortByName = (list, sortTerm) => {
+  if (sortTerm !== 'asc' && sortTerm !== 'desc') return list;
+
+  if (!Array.isArray(list) || list.length === 0) return [];
+
   const results = list.sort((a, b) => {
-    const firstName = a.name.toLocaleLowerCase();
-    const secondName = b.name.toLocaleLowerCase();
+    const firstName = a?.name?.toLocaleLowerCase();
+    const secondName = b?.name?.toLocaleLowerCase();
+
+    if (!firstName || !secondName) return 0;
 
     if (firstName > secondName) return sortValues[sortTerm].bigger;
 
