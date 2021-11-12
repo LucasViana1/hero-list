@@ -1,10 +1,7 @@
 import { useCallback, useState } from 'react';
 import api from '@services/api';
-import md5 from 'md5';
 import axios from 'axios';
-
-const privateKey = process.env.PRIVATE_KEY;
-const publicKey = process.env.PUBLIC_KEY;
+import generateMandatoryQueryString from '@utils/generateMandatoryQueryString';
 
 const useFetchCharacters = () => {
   const [charactersData, setCharactersData] = useState();
@@ -15,14 +12,10 @@ const useFetchCharacters = () => {
   const getCharacters = useCallback(async (searchName = null) => {
     setCharactersIsLoading(true);
     setCharactersError('');
-    const timestamp = Math.floor(Date.now() / 1000);
-    const hash = md5(timestamp + privateKey + publicKey);
 
-    let query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`;
+    let query = `${generateMandatoryQueryString()}&limit=20&offset=0`;
 
-    if (searchName) {
-      query += `&nameStartsWith=${searchName}`;
-    }
+    if (searchName) query += `&nameStartsWith=${searchName}`;
 
     await api
       .get(`/characters${query}`)
@@ -30,7 +23,7 @@ const useFetchCharacters = () => {
         setCharactersData(data);
         setCharactersList(data.results);
       })
-      .catch((error) => setCharactersError(error.message));
+      .catch(({ message }) => setCharactersError(message || 'Erro ao carregar personagens'));
 
     setCharactersIsLoading(false);
   }, []);
@@ -45,12 +38,9 @@ const useFetchCharacters = () => {
       return;
     }
 
-    const timestamp = Math.floor(Date.now() / 1000);
-    const hash = md5(timestamp + privateKey + publicKey);
+    const query = generateMandatoryQueryString();
 
-    const query = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}&limit=20&offset=0`;
-
-    const requests = favoritesId.map((favoriteId) => api.get(`/characters/${favoriteId}${query}`));
+    const requests = favoritesId.map((favoriteId) => api.get(`/characters/${favoriteId}${query}&limit=20&offset=0`));
 
     axios
       .all(requests)
@@ -62,7 +52,7 @@ const useFetchCharacters = () => {
 
         setCharactersList(results);
       })
-      .catch((error) => setCharactersError(error.message))
+      .catch(({ message }) => setCharactersError(message || 'Erro ao carregar personagens favoritos'))
       .finally(() => setCharactersIsLoading(false));
   }, []);
 
