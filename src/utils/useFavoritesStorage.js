@@ -2,14 +2,12 @@ const CHARACTERS_FAVORITES = 'characters_favorites';
 
 const useFavoritesStorage = () => {
   const getFavorites = () => {
-    const charactersFavorites = localStorage.getItem(CHARACTERS_FAVORITES);
-    const convertFavorites = JSON.parse(charactersFavorites);
+    const charactersFavoritesInString = localStorage.getItem(CHARACTERS_FAVORITES);
+    const convertFavorites = JSON.parse(charactersFavoritesInString);
     return convertFavorites || [];
   };
 
-  const setFavorites = (newFavorites) => {
-    localStorage.setItem(CHARACTERS_FAVORITES, JSON.stringify(newFavorites));
-  };
+  const setFavorites = (newFavorites) => localStorage.setItem(CHARACTERS_FAVORITES, JSON.stringify(newFavorites));
 
   const getIndex = (favorites, id) => favorites.findIndex((favoriteId) => favoriteId === id);
 
@@ -33,7 +31,9 @@ const useFavoritesStorage = () => {
       if (isRemove) {
         const foundIndex = getIndex(favorites, convertId);
         favorites.splice(foundIndex, 1);
-      } else if (favorites.length < 5) {
+      }
+
+      if (!isRemove && favorites.length < 5) {
         favorites.push(convertId);
       }
     } else {

@@ -8,7 +8,6 @@ const Routes = () => (
     <Switch>
       <Route exact path="/">
         <Home />
-        {/* <Character /> */}
       </Route>
 
       <Route exact path="/personagem">

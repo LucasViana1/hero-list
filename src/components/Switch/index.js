@@ -20,7 +20,7 @@ const Switch = ({ id, name, checked, onChange }) => {
   );
 
   return (
-    <S.SwitchLabel htmlFor={id} role="button" tabIndex={0} onKeyPress={handleIsChecked} onClick={handleIsChecked}>
+    <S.SwitchLabel htmlFor={id} role="button" tabIndex="0" onKeyPress={handleIsChecked} onClick={handleIsChecked}>
       <S.InputCheckbox id={id} name={name} type="checkbox" checked={isChecked} readOnly />
       <S.Slider />
     </S.SwitchLabel>

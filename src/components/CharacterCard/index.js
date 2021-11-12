@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
 import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
 import { useHistory } from 'react-router-dom';
+import useFavoritesStorage from '@utils/useFavoritesStorage';
 import * as S from './styles';
 import Button from '../Button';
-import useFavoritesStorage from '../../utils/useFavoritesStorage';
 
 const CharacterCard = ({ character }) => {
   const router = useHistory();
@@ -17,22 +17,18 @@ const CharacterCard = ({ character }) => {
     thumbnail: { extension, path },
   } = character;
   const imageUrl = `${path}.${extension}`;
-
   const [isFavorite, setIsFavorite] = useState(verifyFavorite(id));
 
   const handleChangeToFavorite = useCallback(() => {
     setIsFavorite((oldIsFavorite) => {
       const favorites = getFavorites();
-
       updateFavorites(oldIsFavorite, id);
 
       return favorites.length < 5 ? !oldIsFavorite : oldIsFavorite;
     });
   }, [getFavorites, id, updateFavorites]);
 
-  const handleNavigationToCharacter = () => {
-    router.push(`/personagem?id=${id}`, { name, description, imageUrl });
-  };
+  const handleNavigationToCharacter = () => router.push(`/personagem?id=${id}`, { name, description, imageUrl });
 
   return (
     <S.CharacterCard>

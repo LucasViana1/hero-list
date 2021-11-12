@@ -16,10 +16,10 @@ export const Button = styled.button`
   vertical-align: middle;
   white-space: nowrap;
   border: none;
-  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 1rem;
   font-weight: 700;
   transition: all 0.3s ease;
   color: ${color.red.normal};
@@ -28,6 +28,6 @@ export const Button = styled.button`
 
   &:hover,
   &:focus {
-    box-shadow: 0 0 0 2px #000;
+    box-shadow: 0 0 0 2px ${color.gray.dark};
   }
 `;
