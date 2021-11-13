@@ -7,6 +7,7 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --config webpack.prod.js",
+    "env":"node ./generateEnvVars.js",
     "lint": "eslint --ext .js,.jsx src/ --fix",
     "test": "jest",
     "test:coverage": "jest --coverage"
