@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import api from '@services/api';
 import axios from 'axios';
 import generateMandatoryQueryString from '@utils/generateMandatoryQueryString';
+import api from './api';
 
 const useFetchCharacters = () => {
   const [charactersData, setCharactersData] = useState();
