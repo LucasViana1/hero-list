@@ -3,7 +3,7 @@ import { breakpoint, color } from '@styles/theme';
 
 export const HomeHeader = styled.header`
   text-align: center;
-  padding: 2rem 0 0.5rem;
+  padding: 1rem 0 0.5rem;
 
   img {
     margin-bottom: 1rem;
@@ -34,18 +34,24 @@ export const HomeSection = styled.section`
 `;
 
 export const HomeSearch = styled.div`
-  width: 70%;
+  width: 96%;
   margin: auto;
   margin-bottom: 4rem;
+
+  @media (min-width: ${breakpoint.md}) {
+    width: 70%;
+  }
 `;
 
 export const HomeFilter = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column;
   margin-bottom: 2rem;
+  border-bottom: 1px solid ${color.gray.light};
 
-  @media (min-width: ${breakpoint.lg}) {
+  @media (min-width: ${breakpoint.xl}) {
     flex-direction: row;
   }
 
@@ -54,6 +60,11 @@ export const HomeFilter = styled.div`
     align-items: center;
     color: ${color.gray.light};
     font-weight: 700;
+    margin-bottom: 1rem;
+
+    @media (min-width: ${breakpoint.xl}) {
+      margin-bottom: 0;
+    }
   }
 `;
 
@@ -70,6 +81,7 @@ export const FilterActions = styled.div`
   p {
     color: ${color.red.normal};
     margin-right: 1rem;
+    margin-bottom: 0;
 
     img {
       margin-right: 0.25rem;
@@ -100,6 +112,7 @@ export const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 6rem 0;
+  min-height: 50vh;
 `;
 
 export const CharactersContainer = styled.div`
@@ -107,11 +120,7 @@ export const CharactersContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-
-  @media (min-width: ${breakpoint.xl}) {
-    width: 80%;
-    justify-content: flex-start;
-  }
+  min-height: 70vh;
 `;
 
 export const ErrorMessage = styled.span`
