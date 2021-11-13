@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode=production",
+    "build2": "webpack --config ./webpack.config.js --mode production",
     "lint": "eslint --ext .js,.jsx src/ --fix",
     "test": "jest",
     "test:coverage": "jest --coverage"
