@@ -28,7 +28,8 @@ const Character = () => {
   const [characterName, setCharacterName] = useState('');
 
   useEffect(() => {
-    getComics(characterId);
+    const currentYear = new Date().getFullYear();
+    getComics(characterId, currentYear);
   }, [characterId, getComics]);
 
   const handleAddToFavorite = useCallback(() => {
