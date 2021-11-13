@@ -1,19 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
 import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
 import iconHero from '@assets/icones/heroi/noun_Superhero_2227044@2x.png';
-import useFetchCharacters from '@services/useFetchCharacters';
 import Switch from '@components/Switch';
 import Button from '@components/Button';
-import useDebounce from '@utils/useDebounce';
 import Input from '@components/Input';
 import Loader from '@components/Loader';
-import sortByName from '@utils/sortByName';
-import { useLocation } from 'react-router-dom';
 import CharacterCard from '@components/CharacterCard';
 import Logo from '@components/Logo';
-import useFavoritesStorage from '@utils/useFavoritesStorage';
 import Footer from '@components/Footer';
+import Pagination from '@components/Pagination';
+import useFetchCharacters from '@services/useFetchCharacters';
+import useDebounce from '@utils/useDebounce';
+import sortByName from '@utils/sortByName';
+import useFavoritesStorage from '@utils/useFavoritesStorage';
+import generatePageNumber from '@utils/generatePageNumber';
 import * as S from './styles';
 
 const Home = () => {
@@ -21,6 +23,7 @@ const Home = () => {
   const [searchName, setSearchName] = useState(state?.characterName || '');
   const [filterByFavorite, setFilterByFavorite] = useState(false);
   const [filterByName, setFilterByName] = useState('desc');
+  const [currentPage, setCurrentPage] = useState(1);
   const { getFavorites } = useFavoritesStorage();
   const {
     getCharacters,
@@ -34,15 +37,21 @@ const Home = () => {
   const debouncedSearchTerm = useDebounce(searchName, 500);
 
   useEffect(() => {
-    getCharacters(state?.characterName || '');
+    const isRedirect = !!state?.characterName;
+
+    if (!isRedirect) getCharacters(state?.characterName || '');
   }, [getCharacters, state]);
 
   useEffect(() => {
-    if (debouncedSearchTerm) getCharacters(debouncedSearchTerm);
+    if (debouncedSearchTerm) {
+      const initialPage = 1;
+      setCurrentPage(initialPage);
+      getCharacters(debouncedSearchTerm, initialPage);
+    }
   }, [debouncedSearchTerm, getCharacters]);
 
   const handleSearchCharacters = ({ target: { value } }) => {
-    if (value === '') getCharacters();
+    if (value === '') getCharacters('');
     setSearchName(value);
   };
 
@@ -66,6 +75,19 @@ const Home = () => {
     setCharactersList((oldCharactersList) => sortByName(oldCharactersList, sortTerm));
     setFilterByName(currentSortTerm);
   };
+
+  const handlePaginate = useCallback(
+    (isNext, customPage = null) => {
+      setCurrentPage((oldPage) => {
+        const newPage = generatePageNumber(customPage || oldPage, charactersData, isNext);
+
+        if (!debouncedSearchTerm) getCharacters('', newPage);
+
+        return newPage;
+      });
+    },
+    [charactersData, debouncedSearchTerm, getCharacters],
+  );
 
   return (
     <>
@@ -134,12 +156,20 @@ const Home = () => {
             <S.CharactersContainer>
               {charactersList &&
                 charactersList.map((character) => <CharacterCard key={character.id} character={character} />)}
+
+              {charactersList && charactersData && charactersData.count === 0 && (
+                <S.ErrorMessage>Nada foi encontrado</S.ErrorMessage>
+              )}
             </S.CharactersContainer>
           )}
 
           {!charactersIsLoading && charactersError && <S.ErrorMessage>{charactersError}</S.ErrorMessage>}
         </S.HomeArticle>
       </S.HomeSection>
+
+      {charactersData && charactersData.total > 60 && (
+        <Pagination currentPage={currentPage} charactersData={charactersData} setPage={handlePaginate} />
+      )}
 
       <Footer />
     </>

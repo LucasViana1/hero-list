@@ -3,17 +3,20 @@ import axios from 'axios';
 import generateMandatoryQueryString from '@utils/generateMandatoryQueryString';
 import api from './api';
 
+const limit = 20;
+
 const useFetchCharacters = () => {
   const [charactersData, setCharactersData] = useState();
   const [charactersList, setCharactersList] = useState([]);
   const [charactersIsLoading, setCharactersIsLoading] = useState(false);
   const [charactersError, setCharactersError] = useState('');
 
-  const getCharacters = useCallback(async (searchName = null) => {
+  const getCharacters = useCallback(async (searchName, page = 1) => {
     setCharactersIsLoading(true);
     setCharactersError('');
+    const offset = (page - 1) * limit;
 
-    let query = `${generateMandatoryQueryString()}&limit=20&offset=0`;
+    let query = `${generateMandatoryQueryString()}&limit=${limit}&offset=${offset}`;
 
     if (searchName) query += `&nameStartsWith=${searchName}`;
 
