@@ -83,6 +83,12 @@ module.exports = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^.+\\.(css|less|scss)$': 'babel-jest',
+    '^@assets/(.*)$': '<rootDir>/src/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@services/(.*)$': '<rootDir>/src/services/$1',
+    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -127,7 +133,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
