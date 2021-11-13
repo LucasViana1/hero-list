@@ -22,8 +22,8 @@ export const Button = styled.button`
   font-size: 1rem;
   font-weight: 700;
   transition: all 0.3s ease;
-  color: ${color.red.normal};
-  background-color: transparent;
+  color: ${({ isFill }) => (isFill ? '#fff' : color.red.normal)};
+  background-color: ${({ isFill }) => (isFill ? color.red.normal : 'transparent')};
   margin: ${({ margin }) => margin};
 
   &:hover,
