@@ -1,11 +1,11 @@
 import { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
 import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
-import { useHistory } from 'react-router-dom';
 import useFavoritesStorage from '@utils/useFavoritesStorage';
-import * as S from './styles';
 import Button from '../Button';
+import * as S from './styles';
 
 const CharacterCard = ({ character }) => {
   const router = useHistory();
@@ -32,15 +32,14 @@ const CharacterCard = ({ character }) => {
 
   return (
     <S.CharacterCard>
-      <div
+      <S.CharacterThumbnail
         role="button"
         tabIndex="0"
         onKeyPress={handleNavigationToCharacter}
         onClick={handleNavigationToCharacter}
-        style={{ height: '76%', cursor: 'pointer' }}
       >
         <img src={imageUrl} alt={name} />
-      </div>
+      </S.CharacterThumbnail>
 
       <S.CharacterInfos>
         <p title={name}>{name}</p>

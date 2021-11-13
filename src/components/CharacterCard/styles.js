@@ -31,6 +31,11 @@ export const CharacterCard = styled.div`
   }
 `;
 
+export const CharacterThumbnail = styled.div`
+  height: 76%;
+  cursor: pointer;
+`;
+
 export const CharacterInfos = styled.div`
   margin: 3px 0.25rem;
 

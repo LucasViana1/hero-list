@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import useFetchCharacterComics from '@services/useFetchCharacterComics';
-import Input from '@components/Input';
 import iconBook from '@assets/icones/book/Group.png';
 import iconVideo from '@assets/icones/video/Shape.png';
 import iconStar from '@assets/review/Group 4.png';
 import iconHeartUnfilled from '@assets/icones/heart/Path Copy 2@2x.png';
 import iconHeartFilled from '@assets/icones/heart/Path Copy 7@2x.png';
+import Input from '@components/Input';
 import Button from '@components/Button';
+import Footer from '@components/Footer';
 import Logo from '@components/Logo';
 import Loader from '@components/Loader';
+import useFetchCharacterComics from '@services/useFetchCharacterComics';
 import formatDate from '@utils/formatDate';
 import useFavoritesStorage from '@utils/useFavoritesStorage';
-import Footer from '@components/Footer';
 import * as S from './styles';
 
 const Character = () => {
@@ -96,11 +96,11 @@ const Character = () => {
             <S.CharacterQuantity>
               <div>
                 <p>Quadrinhos</p>
-                <p>
+                <S.CharacterQuantityValue>
                   <S.BookImg src={iconBook} alt="Quadrinhos" />
                   {comicsIsLoading && <Loader size="small" />}
                   {!comicsIsLoading && comics && comics.total}
-                </p>
+                </S.CharacterQuantityValue>
               </div>
 
               <div>
@@ -117,11 +117,11 @@ const Character = () => {
                 <img src={iconStar} alt="Avaliação" />
               </p>
 
-              <p>
-                <b>Último quadrinho:</b>
+              <div>
+                <b>Último quadrinho: </b>
                 {comicsIsLoading && <Loader size="small" />}
                 {!comicsIsLoading && !comicsError && formatDate(dateLastComic)}
-              </p>
+              </div>
             </S.CharacterRatingAndLastComic>
           </div>
         </S.CharacterCol>

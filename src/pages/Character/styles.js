@@ -119,6 +119,12 @@ export const CharacterQuantity = styled.div`
   }
 `;
 
+export const CharacterQuantityValue = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const BookImg = styled.img`
   margin-right: 0.75rem;
 `;
