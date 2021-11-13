@@ -5,6 +5,9 @@ const path = require('path');
 const alias = (url) => path.resolve(__dirname, './', url);
 
 module.exports = {
+  entry: {
+    app: './src/index.js',
+  },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
@@ -19,17 +22,27 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.html$/,
         use: [
           {
             loader: 'html-loader',
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
           },
         ],
       },
@@ -48,7 +61,13 @@ module.exports = {
       template: './public/index.html',
       filename: './index.html',
       favicon: './public/favicon.ico',
+      title: 'Production',
     }),
     new Dotenv(),
   ],
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
 };
