@@ -28,6 +28,10 @@ const Character = () => {
   const [characterName, setCharacterName] = useState('');
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const currentYear = new Date().getFullYear();
     getComics(characterId, currentYear);
   }, [characterId, getComics]);
@@ -93,7 +97,7 @@ const Character = () => {
               <div>
                 <p>Quadrinhos</p>
                 <p>
-                  <img src={iconBook} alt="Quadrinhos" />
+                  <S.BookImg src={iconBook} alt="Quadrinhos" />
                   {comicsIsLoading && <Loader size="small" />}
                   {!comicsIsLoading && comics && comics.total}
                 </p>
@@ -102,7 +106,7 @@ const Character = () => {
               <div>
                 <p>Filmes</p>
                 <p>
-                  <img src={iconVideo} alt="Filmes" />
+                  <S.VideoImg src={iconVideo} alt="Filmes" />
                 </p>
               </div>
             </S.CharacterQuantity>
@@ -143,6 +147,10 @@ const Character = () => {
                 <p title={comic.title}>{comic.title}</p>
               </S.ComicCard>
             ))}
+
+          {!comicsIsLoading && comics && comics.results && !comicsError && comics.results.length === 0 && (
+            <S.ErrorMessage>Nada foi encontrado</S.ErrorMessage>
+          )}
 
           {!comicsIsLoading && comicsError && <S.ErrorMessage>{comicsError}</S.ErrorMessage>}
         </S.ComicsContainer>
