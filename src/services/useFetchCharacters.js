@@ -50,6 +50,7 @@ const useFetchCharacters = () => {
           return [...acc, character];
         }, []);
 
+        setCharactersData({ count: results.length });
         setCharactersList(results);
       })
       .catch(({ message }) => setCharactersError(message || 'Erro ao carregar personagens favoritos'))
