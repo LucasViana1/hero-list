@@ -126,4 +126,5 @@ export const CharactersContainer = styled.div`
 export const ErrorMessage = styled.span`
   font-size: 1.8rem;
   color: ${color.red.normal};
+  height: 60vh;
 `;

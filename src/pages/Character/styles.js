@@ -24,7 +24,6 @@ export const CharacterHeader = styled.header`
     label {
       width: auto;
       margin: auto;
-      /* width: 100%; */
 
       @media (min-width: ${breakpoint.md}) {
         width: 66%;
@@ -135,6 +134,7 @@ export const VideoImg = styled.img`
 
 export const CharacterRatingAndLastComic = styled.div`
   color: ${color.gray.dark};
+  margin-bottom: 2rem;
 
   p {
     margin-bottom: 2rem;

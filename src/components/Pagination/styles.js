@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { breakpoint } from '@styles/theme';
 
 export const Pagination = styled.div`
   display: flex;
@@ -12,5 +13,12 @@ export const Pagination = styled.div`
     margin-right: 1rem;
     min-width: 2rem;
     height: 2rem;
+  }
+
+  .button-page-0,
+  .button-page-4 {
+    @media (max-width: ${breakpoint.md}) {
+      display: none;
+    }
   }
 `;

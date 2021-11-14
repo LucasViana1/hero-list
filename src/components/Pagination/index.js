@@ -24,8 +24,13 @@ const Pagination = ({ currentPage, charactersData, setPage }) => {
     <S.Pagination>
       <Button onClick={() => setPage(false)}>anterior</Button>
 
-      {list.map((page) => (
-        <Button key={page} onClick={() => setPage(false, page + 1)} isFill={page === currentPage}>
+      {list.map((page, index) => (
+        <Button
+          key={page}
+          className={`button-page-${index}`}
+          onClick={() => setPage(false, page + 1)}
+          isFill={page === currentPage}
+        >
           {page}
         </Button>
       ))}
