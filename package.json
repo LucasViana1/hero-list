@@ -4,8 +4,7 @@
   "description": "Aplicaçao Web de listagem de herois",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --open --config webpack.dev.js",
-    "dev": "webpack-dev-server --open --mode development",
+    "dev": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "env":"node ./generateEnvVars.js",
     "lint": "eslint --ext .js,.jsx src/ --fix",

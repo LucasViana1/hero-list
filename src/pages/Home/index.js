@@ -25,6 +25,7 @@ const Home = () => {
   const [filterByName, setFilterByName] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const { getFavorites } = useFavoritesStorage();
+  const debouncedSearchTerm = useDebounce(searchName, 500);
   const {
     getCharacters,
     getFavoritesCharacters,
@@ -34,7 +35,6 @@ const Home = () => {
     charactersIsLoading,
     charactersError,
   } = useFetchCharacters();
-  const debouncedSearchTerm = useDebounce(searchName, 500);
 
   useEffect(() => {
     const isRedirect = !!state?.characterName;

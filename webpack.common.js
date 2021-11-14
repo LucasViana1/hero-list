@@ -24,7 +24,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: { loader: 'babel-loader' },
       },
       {
         test: /\.html$/,
@@ -61,7 +61,7 @@ module.exports = {
       template: './public/index.html',
       filename: './index.html',
       favicon: './public/favicon.ico',
-      title: 'Production',
+      // title: 'Production',
     }),
     new Dotenv(),
   ],

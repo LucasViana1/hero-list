@@ -18,7 +18,7 @@ import * as S from './styles';
 const Character = () => {
   const {
     search,
-    state: { name, description, imageUrl },
+    state: { name, description, comicsAvailable, imageUrl },
   } = useLocation();
   const router = useHistory();
   const { getComics, comics, comicsIsLoading, comicsError } = useFetchCharacterComics();
@@ -46,11 +46,7 @@ const Character = () => {
     });
   }, [characterId, getFavorites, updateFavorites]);
 
-  const handleSearchCharacter = ({ key }) => {
-    if (key === 'Enter') {
-      router.push('/', { characterName });
-    }
-  };
+  const handleSearchCharacter = ({ key }) => key === 'Enter' && router.push('/', { characterName });
 
   const handleChange = ({ target: { value } }) => setCharacterName(value);
 
@@ -58,7 +54,7 @@ const Character = () => {
     if (comics && comics.results.length > 0) {
       const [comic] = comics.results;
       const saleDate = comic.dates.find((date) => date.type === 'onsaleDate');
-      return saleDate.date || null;
+      return saleDate?.date || null;
     }
 
     return null;
@@ -68,6 +64,7 @@ const Character = () => {
     <>
       <S.CharacterHeader>
         <Logo />
+
         <div>
           <Input
             id="search-characters"
@@ -98,8 +95,7 @@ const Character = () => {
                 <p>Quadrinhos</p>
                 <S.CharacterQuantityValue>
                   <S.BookImg src={iconBook} alt="Quadrinhos" />
-                  {comicsIsLoading && <Loader size="small" />}
-                  {!comicsIsLoading && comics && comics.total}
+                  {comicsAvailable}
                 </S.CharacterQuantityValue>
               </div>
 
@@ -127,7 +123,7 @@ const Character = () => {
         </S.CharacterCol>
 
         <S.CharacterCol width="50%">
-          <img src={`${imageUrl}`} width="100%" alt="foto personagem" />
+          <img src={`${imageUrl}`} width="100%" alt={`foto ${name}`} />
         </S.CharacterCol>
       </S.CharacterSection>
 
@@ -141,10 +137,10 @@ const Character = () => {
             comics &&
             comics.results &&
             !comicsError &&
-            comics.results.map((comic) => (
-              <S.ComicCard key={comic.id}>
-                <img src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`} alt={comic.title} />
-                <p title={comic.title}>{comic.title}</p>
+            comics.results.map(({ id, title, thumbnail }) => (
+              <S.ComicCard key={id}>
+                <img src={`${thumbnail.path}.${thumbnail.extension}`} alt={title} />
+                <p title={title}>{title}</p>
               </S.ComicCard>
             ))}
 

@@ -14,6 +14,7 @@ const CharacterCard = ({ character }) => {
     id,
     name,
     description,
+    comics,
     thumbnail: { extension, path },
   } = character;
   const imageUrl = `${path}.${extension}`;
@@ -28,7 +29,8 @@ const CharacterCard = ({ character }) => {
     });
   }, [getFavorites, id, updateFavorites]);
 
-  const handleNavigationToCharacter = () => router.push(`/personagem?id=${id}`, { name, description, imageUrl });
+  const handleNavigationToCharacter = () =>
+    router.push(`/personagem?id=${id}`, { name, description, comicsAvailable: comics.available, imageUrl });
 
   return (
     <S.CharacterCard>
@@ -56,6 +58,9 @@ CharacterCard.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    comics: PropTypes.shape({
+      available: PropTypes.number.isRequired,
+    }).isRequired,
     thumbnail: PropTypes.shape({
       extension: PropTypes.string.isRequired,
       path: PropTypes.string.isRequired,

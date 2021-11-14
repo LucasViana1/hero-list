@@ -13,7 +13,7 @@ const useFetchCharacterComics = () => {
     const query = generateMandatoryQueryString();
 
     await api
-      .get(`/characters/${characterId}/comics${query}&limit=10&offset=0&startYear=${year}`)
+      .get(`/characters/${characterId}/comics${query}&limit=10&offset=0&orderBy=-onsaleDate`)
       .then(({ data: { data } }) => {
         setComics(data);
       })
