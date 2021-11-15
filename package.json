@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "env":"node ./generateEnvVars.js",
+    "env": "node ./generateEnvVars.js",
     "lint": "eslint --ext .js,.jsx src/ --fix",
     "test": "jest",
     "test:coverage": "jest --coverage"
@@ -45,7 +45,6 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
-    "@testing-library/user-event": "^13.5.0",
     "babel-jest": "^27.3.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
