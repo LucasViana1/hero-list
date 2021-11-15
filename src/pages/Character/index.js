@@ -35,8 +35,7 @@ const Character = () => {
   }, [characterId, getCharacterById]);
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    getComics(characterId, currentYear);
+    getComics(characterId);
   }, [characterId, getComics]);
 
   const handleAddToFavorite = useCallback(() => {
@@ -49,7 +48,7 @@ const Character = () => {
     });
   }, [characterId, getFavorites, updateFavorites]);
 
-  const handleSearchCharacter = ({ key }) => key === 'Enter' && router.push('/', { characterName });
+  const handleSearchCharacter = ({ key }) => key === 'Enter' && router.push(`/?characterName=${characterName}`);
 
   const handleChange = ({ target: { value } }) => setCharacterName(value);
 

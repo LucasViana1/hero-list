@@ -7,7 +7,7 @@ const useFetchCharacterComics = () => {
   const [comicsIsLoading, setComicsIsLoading] = useState(false);
   const [comicsError, setComicsError] = useState('');
 
-  const getComics = useCallback(async (characterId, year) => {
+  const getComics = useCallback(async (characterId) => {
     setComicsIsLoading(true);
     setComicsError('');
     const query = generateMandatoryQueryString();

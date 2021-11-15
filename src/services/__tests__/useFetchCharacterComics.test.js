@@ -46,12 +46,11 @@ describe('Validate flow for get character comics from custom hook', () => {
   });
 
   const characterId = 123;
-  const year = 2020;
   const limit = 10;
   const limitQuery = `limit=${limit}`;
   const offsetQuery = 'offset=0';
-  const yearQuery = `startYear=${year}`;
-  const path = `/characters/${characterId}/comics?${defaultQuery}&${limitQuery}&${offsetQuery}&${yearQuery}`;
+  const orderByQuery = 'orderBy=-onsaleDate';
+  const path = `/characters/${characterId}/comics?${defaultQuery}&${limitQuery}&${offsetQuery}&${orderByQuery}`;
 
   it('Should validate the initial states', async () => {
     const { result } = renderHook(() => useFetchCharacterComics());
@@ -72,7 +71,7 @@ describe('Validate flow for get character comics from custom hook', () => {
     });
 
     act(() => {
-      getComics(characterId, year);
+      getComics(characterId);
     });
 
     expect(result.current.comicsIsLoading).toBe(true);
@@ -94,7 +93,7 @@ describe('Validate flow for get character comics from custom hook', () => {
     const scope = nock(baseUrl).get(path).reply(400);
 
     act(() => {
-      getComics(characterId, year);
+      getComics(characterId);
     });
 
     expect(result.current.comicsIsLoading).toBe(true);
