@@ -19,8 +19,9 @@ import generatePageNumber from '@utils/generatePageNumber';
 import * as S from './styles';
 
 const Home = () => {
-  const { state } = useLocation();
-  const [searchName, setSearchName] = useState(state?.characterName || '');
+  const { search } = useLocation();
+  const [, characterName] = search.split('=');
+  const [searchName, setSearchName] = useState(characterName || '');
   const [filterByFavorite, setFilterByFavorite] = useState(false);
   const [filterByName, setFilterByName] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,21 +38,26 @@ const Home = () => {
   } = useFetchCharacters();
 
   useEffect(() => {
-    const isRedirect = !!state?.characterName;
+    const isRedirect = !!characterName;
 
-    if (!isRedirect) getCharacters(state?.characterName || '');
-  }, [getCharacters, state]);
+    if (!isRedirect) getCharacters(characterName || '');
+  }, [characterName, getCharacters]);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
       const initialPage = 1;
       setCurrentPage(initialPage);
+      setFilterByName('desc');
       getCharacters(debouncedSearchTerm, initialPage);
     }
   }, [debouncedSearchTerm, getCharacters]);
 
   const handleSearchCharacters = ({ target: { value } }) => {
-    if (value === '') getCharacters('');
+    if (value === '') {
+      getCharacters('');
+      setFilterByName('desc');
+    }
+    setFilterByFavorite(false);
     setSearchName(value);
   };
 
@@ -65,6 +71,9 @@ const Home = () => {
       } else {
         getCharacters();
       }
+
+      setSearchName('');
+      setFilterByName('desc');
 
       return newFilterByFavorite;
     });
@@ -82,6 +91,8 @@ const Home = () => {
         const newPage = generatePageNumber(customPage || oldPage, charactersData, isNext);
 
         if (!debouncedSearchTerm) getCharacters('', newPage);
+
+        setFilterByName('desc');
 
         return newPage;
       });
