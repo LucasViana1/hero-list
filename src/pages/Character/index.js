@@ -13,8 +13,8 @@ import Loader from '@components/Loader';
 import useFetchCharacterComics from '@services/useFetchCharacterComics';
 import formatDate from '@utils/formatDate';
 import useFavoritesStorage from '@utils/useFavoritesStorage';
+import useFetchCharacterById from '@services/useFetchCharacterById';
 import * as S from './styles';
-import useFetchCharacterById from '../../services/useFetchCharacterById';
 
 const Character = () => {
   const { search } = useLocation();

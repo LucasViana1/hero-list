@@ -73,7 +73,6 @@ module.exports = {
   devServer: {
     static: './dist',
     historyApiFallback: true,
-    // contentBase: './',
     hot: true,
   },
 };
