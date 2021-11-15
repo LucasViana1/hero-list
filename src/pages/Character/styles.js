@@ -185,3 +185,10 @@ export const ErrorMessage = styled.span`
   font-size: 1.8rem;
   color: ${color.red.normal};
 `;
+
+export const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 6rem 0;
+  min-height: 50vh;
+`;

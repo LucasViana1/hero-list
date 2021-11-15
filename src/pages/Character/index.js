@@ -14,22 +14,25 @@ import useFetchCharacterComics from '@services/useFetchCharacterComics';
 import formatDate from '@utils/formatDate';
 import useFavoritesStorage from '@utils/useFavoritesStorage';
 import * as S from './styles';
+import useFetchCharacterById from '../../services/useFetchCharacterById';
 
 const Character = () => {
-  const {
-    search,
-    state: { name, description, comicsAvailable, imageUrl },
-  } = useLocation();
+  const { search } = useLocation();
   const router = useHistory();
   const { getComics, comics, comicsIsLoading, comicsError } = useFetchCharacterComics();
   const { verifyFavorite, updateFavorites, getFavorites } = useFavoritesStorage();
   const [, characterId] = search.split('=');
   const [isFavorite, setIsFavorite] = useState(verifyFavorite(characterId));
   const [characterName, setCharacterName] = useState('');
+  const { getCharacterById, character, characterIsLoading, characterError } = useFetchCharacterById();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    getCharacterById(characterId);
+  }, [characterId, getCharacterById]);
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
@@ -78,54 +81,68 @@ const Character = () => {
         </div>
       </S.CharacterHeader>
 
-      <S.CharacterSection>
-        <S.CharacterCol width="40%" isSeparate>
-          <S.CharacterName>
-            <h1>{name}</h1>
-            <Button onClick={handleAddToFavorite} minWidth="1rem" margin="0">
-              <img src={isFavorite ? iconHeartFilled : iconHeartUnfilled} alt="Favoritar" />
-            </Button>
-          </S.CharacterName>
+      {characterIsLoading && (
+        <S.LoaderContainer>
+          <Loader />
+        </S.LoaderContainer>
+      )}
 
-          <S.CharacterDescription>{description || 'Descrição não encontrada'}</S.CharacterDescription>
+      {!characterIsLoading && characterError && <S.ErrorMessage>{characterError}</S.ErrorMessage>}
 
-          <div>
-            <S.CharacterQuantity>
-              <div>
-                <p>Quadrinhos</p>
-                <S.CharacterQuantityValue>
-                  <S.BookImg src={iconBook} alt="Quadrinhos" />
-                  {comicsAvailable}
-                </S.CharacterQuantityValue>
-              </div>
+      {!characterIsLoading && character && (
+        <S.CharacterSection>
+          <S.CharacterCol width="40%" isSeparate>
+            <S.CharacterName>
+              <h1>{character.name}</h1>
+              <Button onClick={handleAddToFavorite} minWidth="1rem" margin="0">
+                <img src={isFavorite ? iconHeartFilled : iconHeartUnfilled} alt="Favoritar" />
+              </Button>
+            </S.CharacterName>
 
-              <div>
-                <p>Filmes</p>
+            <S.CharacterDescription>{character.description || 'Descrição não encontrada'}</S.CharacterDescription>
+
+            <div>
+              <S.CharacterQuantity>
+                <div>
+                  <p>Quadrinhos</p>
+                  <S.CharacterQuantityValue>
+                    <S.BookImg src={iconBook} alt="Quadrinhos" />
+                    {character.comics.available}
+                  </S.CharacterQuantityValue>
+                </div>
+
+                <div>
+                  <p>Filmes</p>
+                  <p>
+                    <S.VideoImg src={iconVideo} alt="Filmes" />
+                  </p>
+                </div>
+              </S.CharacterQuantity>
+
+              <S.CharacterRatingAndLastComic>
                 <p>
-                  <S.VideoImg src={iconVideo} alt="Filmes" />
+                  <b>Rating:</b>
+                  <img src={iconStar} alt="Avaliação" />
                 </p>
-              </div>
-            </S.CharacterQuantity>
 
-            <S.CharacterRatingAndLastComic>
-              <p>
-                <b>Rating:</b>
-                <img src={iconStar} alt="Avaliação" />
-              </p>
+                <div>
+                  <b>Último quadrinho: </b>
+                  {comicsIsLoading && <Loader size="small" />}
+                  {!comicsIsLoading && !comicsError && formatDate(dateLastComic)}
+                </div>
+              </S.CharacterRatingAndLastComic>
+            </div>
+          </S.CharacterCol>
 
-              <div>
-                <b>Último quadrinho: </b>
-                {comicsIsLoading && <Loader size="small" />}
-                {!comicsIsLoading && !comicsError && formatDate(dateLastComic)}
-              </div>
-            </S.CharacterRatingAndLastComic>
-          </div>
-        </S.CharacterCol>
-
-        <S.CharacterCol width="50%">
-          <img src={`${imageUrl}`} width="100%" alt={`foto ${name}`} />
-        </S.CharacterCol>
-      </S.CharacterSection>
+          <S.CharacterCol width="50%">
+            <img
+              src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
+              width="100%"
+              alt={`foto ${character.name}`}
+            />
+          </S.CharacterCol>
+        </S.CharacterSection>
+      )}
 
       <S.CharacterSection flexDirection="column">
         <h2>Últimos lançamentos</h2>
