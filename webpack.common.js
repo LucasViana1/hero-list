@@ -61,7 +61,6 @@ module.exports = {
       template: './public/index.html',
       filename: './index.html',
       favicon: './public/favicon.ico',
-      // title: 'Production',
     }),
     new Dotenv(),
   ],
@@ -69,5 +68,11 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+  },
+  devServer: {
+    static: './dist',
+    historyApiFallback: true,
+    // contentBase: './',
+    hot: true,
   },
 };
