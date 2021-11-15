@@ -88,10 +88,8 @@ const Home = () => {
   const handlePaginate = useCallback(
     (isNext, customPage = null) => {
       setCurrentPage((oldPage) => {
-        const newPage = generatePageNumber(customPage || oldPage, charactersData, isNext);
-
-        if (!debouncedSearchTerm) getCharacters('', newPage);
-
+        const newPage = generatePageNumber(customPage || oldPage, charactersData.total, isNext);
+        getCharacters(debouncedSearchTerm, newPage);
         setFilterByName('desc');
 
         return newPage;
@@ -179,7 +177,7 @@ const Home = () => {
       </S.HomeSection>
 
       {charactersData && charactersData.total > 60 && (
-        <Pagination currentPage={currentPage} charactersData={charactersData} setPage={handlePaginate} />
+        <Pagination currentPage={currentPage} total={charactersData.total} setPage={handlePaginate} />
       )}
 
       <Footer />
