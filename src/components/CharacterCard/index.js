@@ -13,8 +13,6 @@ const CharacterCard = ({ character }) => {
   const {
     id,
     name,
-    description,
-    comics,
     thumbnail: { extension, path },
   } = character;
   const imageUrl = `${path}.${extension}`;
@@ -29,8 +27,7 @@ const CharacterCard = ({ character }) => {
     });
   }, [getFavorites, id, updateFavorites]);
 
-  const handleNavigationToCharacter = () =>
-    router.push(`/personagem?id=${id}`, { name, description, comicsAvailable: comics.available, imageUrl });
+  const handleNavigationToCharacter = () => router.push(`/personagem?id=${id}`);
 
   return (
     <S.CharacterCard>
