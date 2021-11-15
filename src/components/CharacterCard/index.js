@@ -23,6 +23,8 @@ const CharacterCard = ({ character }) => {
       const favorites = getFavorites();
       updateFavorites(oldIsFavorite, id);
 
+      if (oldIsFavorite) return !oldIsFavorite;
+
       return favorites.length < 5 ? !oldIsFavorite : oldIsFavorite;
     });
   }, [getFavorites, id, updateFavorites]);
